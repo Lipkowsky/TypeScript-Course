@@ -28,15 +28,84 @@
 
 // logAge("28");
 
-const buttonElement = document.querySelector("button");
-const calculatePrice = (orginalPrice: number, hasDiscount: boolean) => {
-  return hasDiscount ? orginalPrice * 0.8 : orginalPrice;
+// const buttonElement = document.querySelector("button");
+// const calculatePrice = (orginalPrice: number, hasDiscount: boolean) => {
+//   return hasDiscount ? orginalPrice * 0.8 : orginalPrice;
+// };
+
+// buttonElement.addEventListener("click", () => {
+//   const orginalPrice:number = 50;
+//   const hasDiscount:boolean = new URLSearchParams(window.location.search).get(
+//     "discount"
+//   ) === "true";
+//   console.log(calculatePrice(orginalPrice, hasDiscount));
+// });
+
+// <li>
+// <label for="task-1">Wyrzucić śmieci</label>
+// <input type="checkbox" id="task-1" name="Wyrzucić śmieci">
+// </li>
+
+const taskNameInputElement: HTMLInputElement = document.querySelector("#name");
+const addButtonElement: HTMLButtonElement = document.querySelector("button");
+const taskContainerElement: HTMLElement = document.querySelector(".tasks");
+
+const task = {
+  name: "Wyrzuć śmieci",
+  done: false,
+};
+const tasks: {
+  name: string;
+  done: boolean;
+}[] = [
+  {
+    name: "Wyrzucić śmieci",
+    done: false,
+  },
+  {
+    name: "Pójść na siłkę",
+    done: true,
+  },
+  {
+    name: "Nakarmić koty",
+    done: false,
+  },
+];
+
+const render = () => {
+  taskContainerElement.innerHTML = "";
+  tasks.forEach((task, index) => {
+    const taskElement: HTMLElement = document.createElement("li");
+    // taskElement.innerHTML = task.name;
+    // taskContainerElement.appendChild(taskElement);
+    const id: string = `task-${index}`;
+    const labelElement: HTMLLabelElement = document.createElement("label");
+    labelElement.innerText = task.name;
+    labelElement.setAttribute("for", id);
+
+    const checkboxElement: HTMLInputElement = document.createElement("input");
+    checkboxElement.type = "checkbox";
+    checkboxElement.name = task.name;
+    checkboxElement.id = id;
+    checkboxElement.checked = task.done;
+    checkboxElement.addEventListener("change", () => {
+      task.done = !task.done;
+    })
+    taskElement.appendChild(labelElement);
+    taskElement.appendChild(checkboxElement);
+
+    taskContainerElement.appendChild(taskElement);
+  });
 };
 
-buttonElement.addEventListener("click", () => {
-  const orginalPrice:number = 50;
-  const hasDiscount:boolean = new URLSearchParams(window.location.search).get(
-    "discount"
-  ) === "true";
-  console.log(calculatePrice(orginalPrice, hasDiscount));
+const addTask = (taskName: string) => {
+  tasks.push({ name: taskName, done: false });
+};
+
+addButtonElement.addEventListener("click", (event: Event) => {
+  event.preventDefault();
+  addTask(taskNameInputElement.value);
+  render();
 });
+
+render();
