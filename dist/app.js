@@ -1,4 +1,5 @@
 import renderTasks from "./helpers/render-tasks-helpers.js";
+import { Category } from "./types/types.js";
 import { render as renderCategories } from "./helpers/render-categories-helper.js";
 // let age: number = 29;
 // age = 30;
@@ -39,30 +40,35 @@ const addButtonElement = document.querySelector("button");
 const taskContainerElement = document.querySelector(".tasks");
 const categoriesContainerElement = document.querySelector(".categories");
 let selectedCategory;
-const task = {
-    title: "Wyrzuć śmieci",
-    done: false,
-};
 const tasks = [
     {
         name: "Wyrzucić śmieci",
         done: false,
-        category: "hobby",
+        category: Category.HOBBY,
     },
     {
         name: "Pójść na siłkę",
         done: true,
-        category: "gym",
+        category: Category.GYM,
     },
     {
         name: "Nakarmić koty",
         done: false,
-        category: "work",
+        category: Category.WORK,
     },
 ];
-const categories = ["general", "work", "gym", "hobby"];
+const categories = [
+    Category.GENERAL,
+    Category.GYM,
+    Category.HOBBY,
+    Category.WORK,
+    Category.SOCIAL,
+];
 const addTask = (task) => {
     tasks.push(task);
+};
+const updateSelectedCategory = (newCategory) => {
+    selectedCategory = newCategory;
 };
 addButtonElement.addEventListener("click", (event) => {
     event.preventDefault();
@@ -73,6 +79,16 @@ addButtonElement.addEventListener("click", (event) => {
     });
     renderTasks(tasks, taskContainerElement);
 });
-addTask({ name: "specjalne zadanie od szefa", category: "gym", done: false });
-renderCategories(categories, categoriesContainerElement, selectedCategory);
+const task = ["zrobic klate", Category.GYM, false];
+const taskName = task[0];
+const taskCategory = task[1];
+const taskDoneStatus = task[2];
+addTask({ name: taskName, category: taskCategory, done: taskDoneStatus });
+renderCategories(categories, categoriesContainerElement, updateSelectedCategory);
 renderTasks(tasks, taskContainerElement);
+let newTask;
+newTask = {
+    name: "nowy task",
+    done: true,
+    createAt: new Date(),
+};

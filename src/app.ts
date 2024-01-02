@@ -1,5 +1,5 @@
 import renderTasks from "./helpers/render-tasks-helpers.js";
-import { Category, Task } from "./types/types";
+import { Category, Task } from "./types/types.js";
 import { render as renderCategories } from "./helpers/render-categories-helper.js";
 // let age: number = 29;
 // age = 30;
@@ -57,32 +57,38 @@ const categoriesContainerElement: HTMLElement =
 
 let selectedCategory: Category;
 
-const task = {
-  title: "Wyrzuć śmieci",
-  done: false,
-};
 const tasks: Task[] = [
   {
     name: "Wyrzucić śmieci",
     done: false,
-    category: "hobby",
+    category: Category.HOBBY,
   },
   {
     name: "Pójść na siłkę",
     done: true,
-    category: "gym",
+    category: Category.GYM,
   },
   {
     name: "Nakarmić koty",
     done: false,
-    category: "work",
+    category: Category.WORK,
   },
 ];
 
-const categories: Category[] = ["general", "work", "gym", "hobby"];
+const categories: Category[] = [
+  Category.GENERAL,
+  Category.GYM,
+  Category.HOBBY,
+  Category.WORK,
+  Category.SOCIAL,
+];
 
 const addTask = (task: Task) => {
   tasks.push(task);
+};
+
+const updateSelectedCategory = (newCategory: Category) => {
+  selectedCategory = newCategory;
 };
 
 addButtonElement.addEventListener("click", (event: Event) => {
@@ -94,6 +100,44 @@ addButtonElement.addEventListener("click", (event: Event) => {
   });
   renderTasks(tasks, taskContainerElement);
 });
-addTask({ name: "specjalne zadanie od szefa", category: "gym", done: false });
-renderCategories(categories, categoriesContainerElement, selectedCategory);
+
+type TaskAsTuple = [string, Category, boolean];
+
+const task: TaskAsTuple = ["zrobic klate", Category.GYM, false];
+const taskName = task[0];
+const taskCategory = task[1];
+const taskDoneStatus = task[2];
+
+addTask({ name: taskName, category: taskCategory, done: taskDoneStatus });
+renderCategories(
+  categories,
+  categoriesContainerElement,
+  updateSelectedCategory
+);
 renderTasks(tasks, taskContainerElement);
+
+type TaskType = {
+  name: string;
+  done: boolean;
+  category?: Category;
+};
+
+interface TaskInterface {
+  name: string;
+  done: boolean;
+  category?: Category;
+}
+
+interface TaskInterface {
+  createAt: Date;
+}
+
+
+let newTask: TaskInterface;
+
+newTask = {
+  name: "nowy task",
+  done: true,
+  createAt: new Date(),
+};
+
