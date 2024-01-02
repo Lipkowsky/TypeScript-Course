@@ -6,3 +6,14 @@ export var Category;
     Category["HOBBY"] = "hobby";
     Category["SOCIAL"] = "social";
 })(Category || (Category = {}));
+export class Task {
+    constructor(name, done, category) {
+        this.name = name;
+        this.done = done;
+        this.category = category;
+        this.createdAt = new Date();
+    }
+    logCreationDate(extras) {
+        console.log(`${this.createdAt} utworzono ${extras}`);
+    }
+}

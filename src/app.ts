@@ -1,6 +1,7 @@
 import renderTasks from "./helpers/render-tasks-helpers.js";
 import { Category, Task } from "./types/types.js";
 import { render as renderCategories } from "./helpers/render-categories-helper.js";
+
 // let age: number = 29;
 // age = 30;
 
@@ -58,21 +59,10 @@ const categoriesContainerElement: HTMLElement =
 let selectedCategory: Category;
 
 const tasks: Task[] = [
-  {
-    name: "Wyrzucić śmieci",
-    done: false,
-    category: Category.HOBBY,
-  },
-  {
-    name: "Pójść na siłkę",
-    done: true,
-    category: Category.GYM,
-  },
-  {
-    name: "Nakarmić koty",
-    done: false,
-    category: Category.WORK,
-  },
+  new Task("Wyrzucić śmieci", false, Category.HOBBY),
+  new Task("Wyrzucić śmieci", true, Category.HOBBY),
+  new Task("Wyrzucić śmieci", false, Category.HOBBY),
+  new Task("Wyrzucić śmieci", true, Category.HOBBY),
 ];
 
 const categories: Category[] = [
@@ -93,11 +83,14 @@ const updateSelectedCategory = (newCategory: Category) => {
 
 addButtonElement.addEventListener("click", (event: Event) => {
   event.preventDefault();
-  addTask({
-    name: taskNameInputElement.value,
-    category: selectedCategory,
-    done: false,
-  });
+  const newTask: Task = new Task(
+    taskNameInputElement.value,
+    false,
+    selectedCategory
+  );
+
+  addTask(newTask);
+  newTask.logCreationDate("!!!")
   renderTasks(tasks, taskContainerElement);
 });
 
@@ -108,7 +101,6 @@ const taskName = task[0];
 const taskCategory = task[1];
 const taskDoneStatus = task[2];
 
-addTask({ name: taskName, category: taskCategory, done: taskDoneStatus });
 renderCategories(
   categories,
   categoriesContainerElement,
@@ -116,28 +108,5 @@ renderCategories(
 );
 renderTasks(tasks, taskContainerElement);
 
-type TaskType = {
-  name: string;
-  done: boolean;
-  category?: Category;
-};
-
-interface TaskInterface {
-  name: string;
-  done: boolean;
-  category?: Category;
-}
-
-interface TaskInterface {
-  createAt: Date;
-}
-
-
-let newTask: TaskInterface;
-
-newTask = {
-  name: "nowy task",
-  done: true,
-  createAt: new Date(),
-};
-
+const taskClassInstance = new Task("TEST", true, Category.GENERAL);
+taskClassInstance.logCreationDate("!");

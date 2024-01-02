@@ -1,5 +1,5 @@
 import renderTasks from "./helpers/render-tasks-helpers.js";
-import { Category } from "./types/types.js";
+import { Category, Task } from "./types/types.js";
 import { render as renderCategories } from "./helpers/render-categories-helper.js";
 // let age: number = 29;
 // age = 30;
@@ -41,21 +41,10 @@ const taskContainerElement = document.querySelector(".tasks");
 const categoriesContainerElement = document.querySelector(".categories");
 let selectedCategory;
 const tasks = [
-    {
-        name: "Wyrzucić śmieci",
-        done: false,
-        category: Category.HOBBY,
-    },
-    {
-        name: "Pójść na siłkę",
-        done: true,
-        category: Category.GYM,
-    },
-    {
-        name: "Nakarmić koty",
-        done: false,
-        category: Category.WORK,
-    },
+    new Task("Wyrzucić śmieci", false, Category.HOBBY),
+    new Task("Wyrzucić śmieci", true, Category.HOBBY),
+    new Task("Wyrzucić śmieci", false, Category.HOBBY),
+    new Task("Wyrzucić śmieci", true, Category.HOBBY),
 ];
 const categories = [
     Category.GENERAL,
@@ -72,23 +61,16 @@ const updateSelectedCategory = (newCategory) => {
 };
 addButtonElement.addEventListener("click", (event) => {
     event.preventDefault();
-    addTask({
-        name: taskNameInputElement.value,
-        category: selectedCategory,
-        done: false,
-    });
+    const newTask = new Task(taskNameInputElement.value, false, selectedCategory);
+    addTask(newTask);
+    newTask.logCreationDate("!!!");
     renderTasks(tasks, taskContainerElement);
 });
 const task = ["zrobic klate", Category.GYM, false];
 const taskName = task[0];
 const taskCategory = task[1];
 const taskDoneStatus = task[2];
-addTask({ name: taskName, category: taskCategory, done: taskDoneStatus });
 renderCategories(categories, categoriesContainerElement, updateSelectedCategory);
 renderTasks(tasks, taskContainerElement);
-let newTask;
-newTask = {
-    name: "nowy task",
-    done: true,
-    createAt: new Date(),
-};
+const taskClassInstance = new Task("TEST", true, Category.GENERAL);
+taskClassInstance.logCreationDate("!");
